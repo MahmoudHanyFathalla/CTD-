@@ -1,50 +1,30 @@
+
 import random
 from tkinter import *
 from PIL import ImageTk, Image
-
-def winn():
-  win = Tk()
-  win.geometry('700x500')                                                                 
-  frame = Frame(win, width=600, height=400)
-  frame.pack()
-  frame.place(anchor='center', relx=0.5, rely=0.5)
-  img = ImageTk.PhotoImage(Image.open('C:\\Users\\hp\\Desktop\\vsc pyy\\koko.PNG'))
-  label = Label(frame, image = img)
-  label.pack()
-  win.mainloop()
-
-
-
-def lose():
-  w = Tk()
-  w.geometry('700x500')                                                                 
-  frame = Frame(w, width=600, height=400)
-  frame.pack()
-  frame.place(anchor='center', relx=0.5, rely=0.5)
-  
-  img = ImageTk.PhotoImage(Image.open('C:\\Users\\hp\\Desktop\\vsc pyy\\lose.PNG'))
-  
-  label = Label(frame, image = img)
-  label.pack()
-  w.mainloop()
-
+import cv2
 
 
 lst1=[0,0,0,0,0,0,0,0,0,0]
 lst2=[0,0,0,0,0,0,0,0,0,0]
 lst3=[0,0,0,0,0,0,0,0,0,0]
-lst_user=[]
-lst_comp=[]
+
 g=1
 check= 5
+
 while(g==1):
-  
+  ai=0
+  o=0
+  p=0
+  pp=0
+  ppp=0
+  j=0
+  v=0
   print("bag 1    :",lst1)
   print("bag 2    :",lst2)
   print("bag 3    :",lst3)
   print("\t")
-  print("your bag :",lst_user)
-  print("AI bag   :",lst_comp)
+  
   flag=1
   while(flag==1):
    while True:
@@ -63,9 +43,10 @@ while(g==1):
      else:
         for i in range(0,y):
            lst1.pop(random.randrange(len(lst1)))
-           lst_user.append(0)
            check=1
            flag=0
+           ai=1
+        print(f"u pop {y} balls from bag 1")   
    elif(n==2):
      if (len(lst2) < y or y> 5):
             print("can't remove")
@@ -74,9 +55,10 @@ while(g==1):
      else:
         for i in range(0,y):
            lst2.pop(random.randrange(len(lst2)))
-           lst_user.append(0)
            check=1
-           flag=0           
+           flag=0
+           ai=2           
+        print(f"u pop {y} balls from bag 2 ")   
    elif(n==3):
      if (len(lst3) < y or y> 5):
             print("can't remove")
@@ -85,69 +67,189 @@ while(g==1):
      else:
         for i in range(0,y):
            lst3.pop(random.randrange(len(lst3)))
-           lst_user.append(0)
            check=1
            flag=0
+           ai=3
+        print(f"u pop {y} balls from bag 3 ")   
    else:
       print("ERROR : enter a number [1 or 2 or 3]")
       flag=1
 
-  f=1
-  while(f==1):
+      
+  while (True):
    if(len(lst1)==0 and len(lst2)==0 and len(lst3)==0):
-       f=0
-   else: 
-    k = random. randint(1,3)      
-    if(k==1):
-        rn=random. randint(1,5)   
-        if(len(lst1) < rn):
-             f=1
-        else:
-           for i in range(0,rn):
-              lst1.pop(random.randrange(len(lst1)))
-              lst_comp.append(0)
-              check=0
-              f=0
-    elif(k==2):
-      rn=random. randint(1,5)   
-      if(len(lst2) < rn):
-             f=1
-      else:
-          for i in range(0,rn):
-             lst2.pop(random.randrange(len(lst2)))
-             lst_comp.append(0)
-             check=0
-             f=0             
-    elif(k==3):
-       rn=random. randint(1,5)   
-       if(len(lst3) < rn):
-             f=1
-       else:
-           for i in range(0,rn):
-             lst3.pop(random.randrange(len(lst3)))
-             lst_comp.append(0)
-             check=0
-             f=0             
+     break 
+   if(ai==1):
+    if(len(lst1)<=5 and len(lst1)!=0):
+      v=len(lst1)
+      for i in range(0,len(lst1)):
+           lst1.pop(random.randrange(len(lst1)))
+      print(f"computer pops {v} balls from bag 1 ")
+      check=0
+      break     
+    elif(len(lst1)==7):
+           lst1.pop(random.randrange(len(lst1)))
+           print(f"computer pops 1 ball from bag 1 ")
+           check=0
+           break  
+    elif(len(lst1)==8):
+      for i in range(0,2):
+           lst1.pop(random.randrange(len(lst1)))
+      print(f"computer pops 2 balls from bag 1 ")
+      check=0
+      break       
+    elif(len(lst1)==9):
+      for i in range(0,3):
+           lst1.pop(random.randrange(len(lst1)))
+      print(f"computer pops 3 balls from bag 1 ")
+      check=0
+      break       
+    elif(len(lst1)==10):
+      for i in range(0,4):
+           lst1.pop(random.randrange(len(lst1)))
+      print(f"computer pops 4 balls from bag 1 ")
+      check=0
+      break
+    elif(len(lst1)==0):
+      ai=2       
+      o=1
+    elif(len(lst1)==6 and len(lst2)==0 and len(lst3)==0):
+      lst1.pop(random.randrange(len(lst1)))
+      print(f"computer pops 1 ball from bag 1 ")
+      check=0
+      break
+    elif(len(lst1)==6 and j !=1):
+      ai=2
+      p=1   
+    elif(j==1):
+      lst1.pop(random.randrange(len(lst1)))
+      print(f"computer pops 1 ball from bag 1 ")
+      j=0
+      break
+    check=0       
+   if(ai==2):
+    if(len(lst2)<=5 and len(lst2)!=0):
+      b=len(lst2)
+      for i in range(0,len(lst2)):
+           lst2.pop(random.randrange(len(lst2)))
+      print(f"computer pops {b} balls from bag 2 ")
+      check=0   
+      break       
+    elif(len(lst2)==7):
+           lst2.pop(random.randrange(len(lst2)))
+           print(f"computer pops 1 ball from bag 2 ")
+           check=0
+           break  
+    elif(len(lst2)==8):
+      for i in range(0,2):
+           lst2.pop(random.randrange(len(lst2)))
+      print(f"computer pops 2 balls from bag 2 ")
+      check=0
+      break     
+    elif(len(lst2)==9):
+      for i in range(0,3):
+           lst2.pop(random.randrange(len(lst2)))
+      print(f"computer pops 3 balls from bag 2 ")
+      check=0
+      break     
+    elif(len(lst2)==10):
+      for i in range(0,4):
+           lst2.pop(random.randrange(len(lst2)))
+      print(f"computer pops 4 balls from bag 2 ")
+      check=0
+      break
+    elif(v==1):
+      lst2.pop(random.randrange(len(lst2)))
+      print(f"computer pops 1 ball from bag 2 ")
+      check=0
+      break
+    elif(len(lst2)==0):
+      ai=3
+      o=2  
+    elif(len(lst2)==6 and len(lst1)==0 and len(lst3)==0):
+      lst2.pop(random.randrange(len(lst2)))
+      print(f"computer pops 1 ball from bag 2 ")
+      check=0
+      break  
+    elif(len(lst2)==6):
+      ai=3 
+      pp=1 
+    elif(j==1):
+      lst2.pop(random.randrange(len(lst2)))
+      print(f"computer pops 1 ball from bag 2 ")
+      j=0      
+      break 
+    check=0       
+   if(ai==3):
+    if(len(lst3)<=5 and len(lst3)!=0):
+      n=len(lst3)
+      for i in range(0,len(lst3)):
+           lst3.pop(random.randrange(len(lst3)))
+      print(f"computer pops {n} balls from bag 3 ")
+      check=0
+      break     
+    elif(len(lst3)==7):
+           lst3.pop(random.randrange(len(lst3)))
+           print(f"computer pops 1 ball from bag 3 ")
+           check=0
+           break
+    elif(len(lst3)==8):
+      for i in range(0,2):
+           lst3.pop(random.randrange(len(lst3)))
+      print(f"computer pops 2 balls from bag 3 ")
+      check=0
+      break     
+    elif(len(lst3)==9):
+      for i in range(0,3):
+           lst3.pop(random.randrange(len(lst3)))
+      print(f"computer pops 3 balls from bag 3 ") 
+      check=0 
+      break   
+    elif(len(lst3)==10):
+      for i in range(0,4):
+           lst3.pop(random.randrange(len(lst3)))
+      print(f"computer pops 4 balls from bag 3 ")
+      check=0
+      break
+    elif(v==3):
+      lst3.pop(random.randrange(len(lst3)))
+      print(f"computer pops 1 balls from bag 3 ") 
+      check=0 
+      break 
+    elif(len(lst3)==0):
+      ai=1
+      o=3  
+    elif(len(lst3)==6):
+      ai=1       
+      ppp=1
+    elif(j==1):
+      lst3.pop(random.randrange(len(lst3)))
+      print(f"computer pops 1 ball from bag 3 ")
+      j=0  
+      break
+    check=0
+   if(pp==1 and p==1 and ppp==1):
+      j=1
+      ai=1
+   if(o==1 and pp==1 and ppp==1):
+     v=1   
+     ai=2
+   if(o==2 and ppp==1):
+     v=3 
+     ai=3
+   
   if(len(lst1)==0 and len(lst2)==0 and len(lst3)==0):
-    g=0
+    
     if(check==0):
-        print("YOU WIN")
-        fl=0
+        img = cv2.imread('C:\\Users\\hp\\Desktop\\vsc pyy\\lose.PNG', 1)
+        cv2.imshow('image', img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        print("you lose")
     else:
-        print("YOU LOSE")
-        fl=1     
-    if(fl==0):
-       winn()
-    else:
-        lose()   
-
-
-
-
-
-
-
-
-
-
-
+        img = cv2.imread('C:\\Users\\hp\\Desktop\\vsc pyy\\koko.PNG',1)
+        cv2.imshow('image',img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows() 
+        print("you win")    
+ 
